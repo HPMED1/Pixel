@@ -29,7 +29,7 @@ async def ping(ctx):
 #8ball
 @b.command(aliases=['8ball'])
 async def _8ball(ctx, *, question):
-    rr = ['no|لا','yes|ايوه', 'Maybe|ممكن']
+    rr = ['no|لا','yes|ايوه', 'Maybe|ممكن', '55555555555|خخخخخخخخخخخخ']
     await ctx.send (f'QUESTION:{question}\nAnswer: {random.choice(rr)}')
 #the run
 b.run('NzQxNzg0NjcwMzc4NjU1NzY2.Xy8mzw.KtnWs6ec4VX-S9D8epHKPeXUP2U')
