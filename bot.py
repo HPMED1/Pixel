@@ -43,4 +43,4 @@ async def _is(ctx, *, member_name):
 
 
 #the run
-b.run('NzQxNzg0NjcwMzc4NjU1NzY2.Xy8mzw.KtnWs6ec4VX-S9D8epHKPeXUP2U')
+b.run('NzQxNzg0NjcwMzc4NjU1NzY2.Xy8mzw.WcBlJI7pW2U8rZVizr8xiLg3Guo')
