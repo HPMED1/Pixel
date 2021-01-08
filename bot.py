@@ -15,7 +15,7 @@ async def on_ready():
 #help
 @b.command(aliases=['HELP'])
 async def help(ctx):
-  await ctx.send('`1-8ball: ask me something and i will answer. example (.8ball are you a bot) 2-how_much: ask me something and i will answer with a percentage. example (.how_much areyou good) 3-does: ask me somthing and i will answer with yes or no. example (does any one love me) 4-is: type is and mention and see` sorry for the bad looking but it will be better soon')
+  await ctx.send('`1-8ball: ask me something and i will answer \nexample ".8ball are you a bot"\n2-how_much: ask me something and i will answer with a percentage \nexample "how_much are you good"\n3-does: ask me somthing and i will answer with yes or no \nexample "does any one love me"\n4-is: type is and mention and see`')
 #ping
 @b.command()
 async def ping(ctx):
@@ -46,3 +46,4 @@ async def _is(ctx, *, member_name):
 keep_alive()
 #the run
 b.run('NzQxNzg0NjcwMzc4NjU1NzY2.Xy8mzw.WcBlJI7pW2U8rZVizr8xiLg3Guo')
+
