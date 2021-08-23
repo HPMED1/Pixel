@@ -3,9 +3,6 @@ import discord
 import random
 from discord.ext import commands
 from keep import keep_alive
-#import youtube_dl
-#import os
-#import DiscordUtils
 #the perfix
 b = commands.Bot(command_prefix='.')
 
@@ -74,15 +71,7 @@ async def question(ctx, *, question1):
 	await ctx.send(f'{random.choice(does_list)}')
 
 
-#is
-#@b.command(aliases=['is', 'IS'])
-#async def _is(ctx, *, member_name):
-#	is_list = [
-#	    'a nice guy? yes|راجل طيب؟ ايوه', 'a bitch? yes|عاهره؟ ايوه',
-#	    'a gay? yes|شاذ؟ ايوه'
-#	]
-#	await ctx.send(
-#	    f'QUESTION:is {member_name}\nAnswer: {random.choice(is_list)}')
+
 
 #dm
 @b.command(aliases=['DM'], help="do i have to explain?")
@@ -98,8 +87,10 @@ async def dm(ctx, member: discord.Member):
 
 	await member.send(
 	    f'{ctx.author.mention} Has a message for you:\n{message.content}')
-
-
+#say
+@b.command(aliases=['SAY'], help="do i have to explain?")
+async def say(ctx,saywhat):
+	await ctx.send(f"{saywhat}")
 
 
 
