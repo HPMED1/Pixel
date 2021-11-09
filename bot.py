@@ -1,14 +1,14 @@
 #
+from keep import keep_alive
 import discord
 import random
 from discord.ext import commands, tasks
-from keep import keep_alive
+#from keep import keep_alive
 import youtube_dl
 import os
 import time
 import sys
 #from twitch import TwitchClient
-from pprint import pformat
 import DiscordUtils
 #the perfix
 b = commands.Bot(command_prefix='.')
@@ -100,29 +100,7 @@ async def say(ctx, ):
 
     await ctx.send(f'{ctx.author.mention} made me say\n{message.content}')
 
-
-#@b.command()
-#async def info(ctx, username):
-#response = await ctx.send("Querying twitch database...")
-#try:
-#users = client.users.translate_usernames_to_ids(username)
-#for user in users:
-#print(user.id)
-#userid = user.id
-#twitchinfo = client.users.get_by_id(userid)
-#status = client.streams.get_stream_by_user(userid)
-#if status == None:
-#print("Not live")
-#livestat = twitchinfo.display_name + "is not live"
-#else:
-#livestat = twitchinfo.display_name + " is " + status.stream_type
-#responsemsg = pformat(twitchinfo) + "\n" + livestat
-#await response.edit(content=responsemsg)
-#except:
-#await response.edit(content="Invalid username")
 music = DiscordUtils.Music()
-
-
 @b.command(aliases=['J', 'j'], help="Joins the voice channel")
 async def join(ctx):
     await ctx.author.voice.channel.connect()
@@ -136,10 +114,12 @@ async def leave(ctx):
 
 @b.command(aliases=['p', 'P'], help="play music")
 async def play(ctx, *, url):
+    if not ctx.guild.voice_client in b.voice_clients:
+        await ctx.author.voice.channel.connect()
+        await ctx.send("I'm connected")
+    time.sleep(0.5)
     player = music.get_player(guild_id=ctx.guild.id)
-    if not b.is_connected()
-      await ctx.author.voice.channel.connect()
-      await ctx.send("I'm connected")
+    time.sleep(0.5)
     if not player:
         player = music.create_player(ctx, ffmpeg_error_betterfix=True)
     if not ctx.voice_client.is_playing():
@@ -151,7 +131,7 @@ async def play(ctx, *, url):
         await ctx.send(f"Queued {song.name}")
 
 
-@b.command(aliases=['st', 'ST'], help="pause the music")
+@b.command(aliases=['wait', 'WAIT'], help="pause the music")
 async def pause(ctx):
     player = music.get_player(guild_id=ctx.guild.id)
     song = await player.pause()
@@ -165,7 +145,7 @@ async def resume(ctx):
     await ctx.send(f"Resumed {song.name}")
 
 
-@b.command(aliases=['s', 'S'], help="stop the music")
+@b.command(help="stop the music")
 async def stop(ctx):
     player = music.get_player(guild_id=ctx.guild.id)
     await player.stop()
@@ -196,7 +176,7 @@ async def np(ctx):
     await ctx.send(song.name)
 
 
-@b.command(help="skip songs")
+@b.command(aliases=['s', 'S'], help="skip songs")
 async def skip(ctx):
     player = music.get_player(guild_id=ctx.guild.id)
     data = await player.skip(force=True)
@@ -227,8 +207,10 @@ async def remove(ctx, index):
 async def add(ctx, num1: int, num2: int):
     res = float(num1 + num2)
     await ctx.send(res)
-
-
 keep_alive()
 #the run
+@b.command()
+async def servers(ctx):
+  guilds = await b.fetch_guilds(limit=150).flatten()
+  await ctx.send(f'`{guilds}`')
 b.run('NzQxNzg0NjcwMzc4NjU1NzY2.Xy8mzw.WcBlJI7pW2U8rZVizr8xiLg3Guo')
