@@ -1,20 +1,17 @@
 #
-from keep import keep_alive
 import discord
 import random
 from discord.ext import commands, tasks
-#from keep import keep_alive
 import youtube_dl
 import os
 import time
 import sys
-#from twitch import TwitchClient
 import DiscordUtils
 #the perfix
 b = commands.Bot(command_prefix='.')
 
 
-#client = TwitchClient(client_id='<twitch token>')
+
 #b.remove_command("help")
 #events
 #on ready
