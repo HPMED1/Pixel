@@ -5,6 +5,11 @@ import random
 from discord.ext import commands
 from discord.ext import commands, tasks
 import json
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+TOKEN = os.getenv('token')
 #the perfix---------------------------------------------------------------------pip
 
 b = commands.Bot(command_prefix='.')
@@ -156,4 +161,4 @@ async def say(ctx, ):
 
     await ctx.send(f'{ctx.author.mention} made me say\n{message.content}')
 
-b.run('NzQxNzg0NjcwMzc4NjU1NzY2.Gh4V11.0xbVJmmhnE6ILG-Mn15mRxEtSeoCsH3byI1rDM')
+b.run(TOKEN)
