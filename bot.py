@@ -7,6 +7,7 @@ from discord.ext import commands, tasks
 import json
 import os
 import asyncio
+import settings
 #the perfix---------------------------------------------------------------------pip
 
 intents = discord.Intents.all()
@@ -15,30 +16,33 @@ b = discord.Client(intents=intents)
 tree = discord.app_commands.CommandTree(b)
 #events-------------------------------------------------------------------------
 #on ready-----------------------------------------------------------------------
-
+class ImgCmds(app_commands.Group):
+  pass
+imgcmds = ImgCmds(name="memes", description="All meme genration commands")
 
 @b.event
 async def on_ready():
-  await tree.sync(guild=discord.Object(id=871311803630645279))
+  #b.tree.copy_global_to(gulid=settings.GULIDS_ID)
+  await tree.sync(gulid=871311803630645279)
   # print "ready" in the console when the bot is ready to work
   print("ready")
-
+  b.tree.add_command(imgcmds)
 
 #commands-----------------------------------------------------------------------
 #ready--------------------------------------------------------------------------
-@tree.command(name="ready", guild=discord.Object(id=871311803630645279))
+@tree.command(name="ready")
 async def _ready(interaction: discord.Interaction):
 
   await interaction.response.send_message("Hello!")
 
 
 #ping---------------------------------------------------------------------------
-@tree.command(name="ping", guild=discord.Object(id=871311803630645279))
+@tree.command(name="ping")
 async def ping(interaction: discord.Interaction):
   await interaction.response.send_message(f'pong! {round(b.latency * 1000)}ms')
 
 
-@tree.command(name="affirmaion", guild=discord.Object(id=871311803630645279))
+@tree.command(name="affirmaion")
 async def affirmation(interaction: discord.Interaction):
   r = requests.get("https://www.affirmations.dev")
   embed = discord.Embed(color=0x000000)
@@ -46,7 +50,7 @@ async def affirmation(interaction: discord.Interaction):
   await interaction.response.send_message(embed=embed)
 
 
-@tree.command(name="advice", guild=discord.Object(id=871311803630645279))
+@tree.command(name="advice")
 async def advice(interaction: discord.Interaction):
   r = requests.get("https://api.adviceslip.com/advice")
   embed = discord.Embed(color=0x000000)
@@ -54,7 +58,7 @@ async def advice(interaction: discord.Interaction):
   await interaction.response.send_message(embed=embed)
 
 
-@tree.command(name="evilinsult", guild=discord.Object(id=871311803630645279))
+@tree.command(name="evilinsult")
 async def evilinsult(interaction: discord.Interaction):
   r = requests.get(
     f"https://evilinsult.com/generate_insult.php?lang=en&numbe={random.randint(1,3000)}&type=json"
@@ -65,7 +69,7 @@ async def evilinsult(interaction: discord.Interaction):
   await interaction.response.send_message(embed=embed)
 
 
-@tree.command(name="define", guild=discord.Object(id=871311803630645279))
+@tree.command(name="define")
 @app_commands.describe(word_to_define="what should i define")
 async def define(interaction: discord.Interaction, word_to_define: str):
   r = requests.get(
@@ -80,7 +84,7 @@ async def define(interaction: discord.Interaction, word_to_define: str):
 
 
 #how much
-@tree.command(name="howmuch", guild=discord.Object(id=871311803630645279))
+@tree.command(name="howmuch")
 @app_commands.describe(question="question")
 async def how_much(interaction: discord.Interaction, question: str):
   how_list = [
@@ -99,7 +103,7 @@ async def how_much(interaction: discord.Interaction, question: str):
 
 
 #say
-@tree.command(name="sadcat", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="sadcat")
 @app_commands.describe(question="question")
 async def advice(interaction: discord.Interaction, question: str):
   data = question.replace(" ", "+")
@@ -111,7 +115,7 @@ async def advice(interaction: discord.Interaction, question: str):
     file=discord.File("image.webp"))
 
 
-@tree.command(name="poohmeme", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="poohmeme")
 @app_commands.describe(text1="text1", text2="text2")
 async def poohmeme(interaction: discord.Interaction, text1: str, text2: str):
   data1 = text1.replace(" ", "+")
@@ -132,13 +136,13 @@ async def showerthought(interaction: discord.Interaction):
   await interaction.response.send_message(rr)
 
 
-@tree.command(name="avatar", guild=discord.Object(id=871311803630645279))
+@tree.command(name="avatar")
 @app_commands.describe(member="member")
 async def avatar(interaction: discord.Interaction, member: discord.Member):
   await interaction.response.send_message(member.avatar)
 
 
-@tree.command(name="jail", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="jail")
 @app_commands.describe(member="member")
 async def jail(interaction: discord.Interaction, member: discord.Member):
   r = requests.get(f"https://api.popcat.xyz/jail?image={member.avatar}")
@@ -149,7 +153,7 @@ async def jail(interaction: discord.Interaction, member: discord.Member):
     file=discord.File("image.webp"))
 
 
-@tree.command(name="unforgivable", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="unforgivable")
 @app_commands.describe(question="question")
 async def unforgivable(interaction: discord.Interaction, question: str):
   data = question.replace(" ", "+")
@@ -161,7 +165,7 @@ async def unforgivable(interaction: discord.Interaction, question: str):
     file=discord.File("image.webp"))
 
 
-@tree.command(name="oogway", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="oogway")
 @app_commands.describe(question="question")
 async def oogway(interaction: discord.Interaction, question: str):
   data = question.replace(" ", "+")
@@ -173,7 +177,7 @@ async def oogway(interaction: discord.Interaction, question: str):
     file=discord.File("image.webp"))
 
 
-@tree.command(name="gun", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="gun")
 @app_commands.describe(member="member")
 async def gun(interaction: discord.Interaction, member: discord.Member):
   r = requests.get(f"https://api.popcat.xyz/gun?image={member.avatar}")
@@ -184,14 +188,14 @@ async def gun(interaction: discord.Interaction, member: discord.Member):
     file=discord.File("image.webp"))
 
 
-@tree.command(name="randommeme", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="randommeme")
 async def randommeme(interaction: discord.Interaction):
   r = requests.get("https://api.popcat.xyz/meme")
   rr = r.json()
   await interaction.response.send_message(rr['image'])
 
 
-@tree.command(name="ship", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="ship")
 @app_commands.describe(member1="member1", member2="member2")
 async def ship(interaction: discord.Interaction, member1: discord.Member,
                member2: discord.Member):
@@ -204,7 +208,7 @@ async def ship(interaction: discord.Interaction, member1: discord.Member,
     f'{interaction.user.mention} made this!', file=discord.File("image.webp"))
 
 
-@tree.command(name="clown", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="clown")
 @app_commands.describe(member="member")
 async def clown(interaction: discord.Interaction, member: discord.Member):
   r = requests.get(f"https://api.popcat.xyz/clown?image={member.avatar}")
@@ -215,7 +219,7 @@ async def clown(interaction: discord.Interaction, member: discord.Member):
     file=discord.File("image.webp"))
 
 
-@tree.command(name="pet", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="pet")
 @app_commands.describe(member="member")
 async def pet(interaction: discord.Interaction, member: discord.Member):
   r = requests.get(f"https://api.popcat.xyz/pet?image={member.avatar}")
@@ -226,7 +230,7 @@ async def pet(interaction: discord.Interaction, member: discord.Member):
     file=discord.File("image.gif"))
 
 
-@tree.command(name="alert", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="alert")
 @app_commands.describe(text="text")
 async def alert(interaction: discord.Interaction, text: str):
   data = text.replace(" ", "+")
@@ -238,7 +242,7 @@ async def alert(interaction: discord.Interaction, text: str):
     file=discord.File("image.webp"))
 
 
-@tree.command(name="facts", guild=discord.Object(id=871311803630645279))
+@imgcmds.command(name="facts")
 @app_commands.describe(text="text")
 async def facts(interaction: discord.Interaction, text: str):
   data = text.replace(" ", "+")
@@ -250,7 +254,7 @@ async def facts(interaction: discord.Interaction, text: str):
     file=discord.File("image.webp"))
 
 
-@tree.command(name="lyrics", guild=discord.Object(id=871311803630645279))
+@tree.command(name="lyrics")
 @app_commands.describe(name="name")
 async def lyrics(interaction: discord.Interaction, name: str):
   data = name.replace(" ", "+")
@@ -262,4 +266,4 @@ async def lyrics(interaction: discord.Interaction, name: str):
   embed.add_field(name='Artist', value=rr['artist'])
   await interaction.response.send_message('`'+rr['lyrics']+'`', embed=embed)
 
-b.run("NzQxNzg0NjcwMzc4NjU1NzY2.GuqQKz.8R3jmDmh3CDjYyzl-O2bl6SLGyhMPqb-tU3jo8")
+b.run(settings.DISCORD_API_TOKEN)
