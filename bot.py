@@ -6,6 +6,7 @@ import random
 from discord.ext import commands, tasks
 import json
 import os
+import asyncio
 #the perfix---------------------------------------------------------------------pip
 
 intents = discord.Intents.all()
@@ -65,12 +66,12 @@ async def evilinsult(interaction: discord.Interaction):
 
 
 @tree.command(name="define", guild=discord.Object(id=871311803630645279))
-@app_commands.describe(thing_to_define="what should i define")
-async def define(interaction: discord.Interaction, thing_to_define: str):
+@app_commands.describe(word_to_define="what should i define")
+async def define(interaction: discord.Interaction, word_to_define: str):
   r = requests.get(
-    f"https://api.urbandictionary.com/v0/define?term={thing_to_define}")
+    f"https://api.urbandictionary.com/v0/define?term={word_to_define}")
   embed = discord.Embed(color=0x000000)
-  embed.add_field(name="Question", value=thing_to_define, inline=True)
+  embed.add_field(name="Question", value=word_to_define, inline=True)
   embed.add_field(name="Answer",
                   value=r.json()['list'][random.randrange(0,
                                                           10)]['definition'],
@@ -103,9 +104,162 @@ async def how_much(interaction: discord.Interaction, question: str):
 async def advice(interaction: discord.Interaction, question: str):
   data = question.replace(" ", "+")
   r = requests.get(f"https://api.popcat.xyz/sadcat?text={data}")
-  with open("myimage.png", "wb") as f:
+  with open("image.webp", "wb") as f:
     f.write(r.content)
-  await interaction.response.send_message(f'{interaction.user.mention} Made This!', file = discord.File("myimage.png"))
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.webp"))
 
+
+@tree.command(name="poohmeme", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(text1="text1", text2="text2")
+async def poohmeme(interaction: discord.Interaction, text1: str, text2: str):
+  data1 = text1.replace(" ", "+")
+  data2 = text2.replace(" ", "+")
+  r = requests.get(f"https://api.popcat.xyz/pooh?text1={text1}&text2={text2}")
+  with open("image.webp", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.webp"))
+
+
+@tree.command(name="showerthought",
+              guild=discord.Object(id=871311803630645279))
+async def showerthought(interaction: discord.Interaction):
+  r = requests.get("https://api.popcat.xyz/showerthoughts")
+  rr = r.json()["result"]
+  await interaction.response.send_message(rr)
+
+
+@tree.command(name="avatar", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(member="member")
+async def avatar(interaction: discord.Interaction, member: discord.Member):
+  await interaction.response.send_message(member.avatar)
+
+
+@tree.command(name="jail", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(member="member")
+async def jail(interaction: discord.Interaction, member: discord.Member):
+  r = requests.get(f"https://api.popcat.xyz/jail?image={member.avatar}")
+  with open("image.webp", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.webp"))
+
+
+@tree.command(name="unforgivable", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(question="question")
+async def unforgivable(interaction: discord.Interaction, question: str):
+  data = question.replace(" ", "+")
+  r = requests.get(f"https://api.popcat.xyz/unforgivable?text={data}")
+  with open("image.webp", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.webp"))
+
+
+@tree.command(name="oogway", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(question="question")
+async def oogway(interaction: discord.Interaction, question: str):
+  data = question.replace(" ", "+")
+  r = requests.get(f"https://api.popcat.xyz/oogway?text={data}")
+  with open("image.webp", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.webp"))
+
+
+@tree.command(name="gun", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(member="member")
+async def gun(interaction: discord.Interaction, member: discord.Member):
+  r = requests.get(f"https://api.popcat.xyz/gun?image={member.avatar}")
+  with open("image.webp", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.webp"))
+
+
+@tree.command(name="randommeme", guild=discord.Object(id=871311803630645279))
+async def randommeme(interaction: discord.Interaction):
+  r = requests.get("https://api.popcat.xyz/meme")
+  rr = r.json()
+  await interaction.response.send_message(rr['image'])
+
+
+@tree.command(name="ship", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(member1="member1", member2="member2")
+async def ship(interaction: discord.Interaction, member1: discord.Member,
+               member2: discord.Member):
+  r = requests.get(
+    f"https://api.popcat.xyz/ship?user1={member1.avatar}&user2={member2.avatar}"
+  )
+  with open("image.webp", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this!', file=discord.File("image.webp"))
+
+
+@tree.command(name="clown", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(member="member")
+async def clown(interaction: discord.Interaction, member: discord.Member):
+  r = requests.get(f"https://api.popcat.xyz/clown?image={member.avatar}")
+  with open("image.webp", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.webp"))
+
+
+@tree.command(name="pet", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(member="member")
+async def pet(interaction: discord.Interaction, member: discord.Member):
+  r = requests.get(f"https://api.popcat.xyz/pet?image={member.avatar}")
+  with open("image.gif", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.gif"))
+
+
+@tree.command(name="alert", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(text="text")
+async def alert(interaction: discord.Interaction, text: str):
+  data = text.replace(" ", "+")
+  r = requests.get(f"https://api.popcat.xyz/alert?text={data}")
+  with open("image.webp", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.webp"))
+
+
+@tree.command(name="facts", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(text="text")
+async def facts(interaction: discord.Interaction, text: str):
+  data = text.replace(" ", "+")
+  r = requests.get(f"https://api.popcat.xyz/facts?text={data}")
+  with open("image.webp", "wb") as f:
+    f.write(r.content)
+  await interaction.response.send_message(
+    f'{interaction.user.mention} made this meme!',
+    file=discord.File("image.webp"))
+
+
+@tree.command(name="lyrics", guild=discord.Object(id=871311803630645279))
+@app_commands.describe(name="name")
+async def lyrics(interaction: discord.Interaction, name: str):
+  data = name.replace(" ", "+")
+  r = requests.get(f"https://api.popcat.xyz/lyrics?song={data}")
+  rr = r.json()
+  embed = discord.Embed(color=0x000000)
+  embed.add_field(name='Name', value=rr["title"])
+  embed.set_image(url=rr['image'])
+  embed.add_field(name='Artist', value=rr['artist'])
+  await interaction.response.send_message('`'+rr['lyrics']+'`', embed=embed)
 
 b.run("NzQxNzg0NjcwMzc4NjU1NzY2.GuqQKz.8R3jmDmh3CDjYyzl-O2bl6SLGyhMPqb-tU3jo8")
