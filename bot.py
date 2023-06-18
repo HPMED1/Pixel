@@ -273,5 +273,13 @@ async def lyrics(interaction: discord.Interaction, name: str):
   await interaction.response.send_message('`' + rr['lyrics'] + '`',
                                           embed=embed)
 
+@tree.command(name="tax")
+@app_commands.describe(amount_to_tax="amount to tax")
+async def tax(interaction: discord.Interaction, amount_to_tax: int):
+  embed = discord.Embed(color=0x000000)
+  embed.add_field(name="Probot tax", value=int(amount_to_tax * 0.05), inline=True)
+  embed.add_field(name="Total amount",value=amount_to_tax * 0.05 + amount_to_tax,inline=True)
+  await interaction.response.send_message(embed=embed)
+
 
 b.run(settings.DISCORD_API_TOKEN)
