@@ -14,19 +14,25 @@ intents = discord.Intents.all()
 # if you don't want all intents you can do discord.Intents.default()
 b = discord.Client(intents=intents)
 tree = discord.app_commands.CommandTree(b)
+
+
 #events-------------------------------------------------------------------------
 #on ready-----------------------------------------------------------------------
 class ImgCmds(app_commands.Group):
   pass
+
+
 imgcmds = ImgCmds(name="memes", description="All meme genration commands")
+
 
 @b.event
 async def on_ready():
-  #b.tree.copy_global_to(gulid=settings.GULIDS_ID)
-  await tree.sync(gulid=871311803630645279)
+  tree.add_command(imgcmds)
+  tree.copy_global_to(guild=settings.GUILDS_ID)
+  await tree.sync(guild=settings.GUILDS_ID)
   # print "ready" in the console when the bot is ready to work
   print("ready")
-  b.tree.add_command(imgcmds)
+
 
 #commands-----------------------------------------------------------------------
 #ready--------------------------------------------------------------------------
@@ -264,6 +270,8 @@ async def lyrics(interaction: discord.Interaction, name: str):
   embed.add_field(name='Name', value=rr["title"])
   embed.set_image(url=rr['image'])
   embed.add_field(name='Artist', value=rr['artist'])
-  await interaction.response.send_message('`'+rr['lyrics']+'`', embed=embed)
+  await interaction.response.send_message('`' + rr['lyrics'] + '`',
+                                          embed=embed)
+
 
 b.run(settings.DISCORD_API_TOKEN)
