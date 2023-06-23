@@ -7,10 +7,11 @@ import json
 import os
 import asyncio
 import settings
-
+import wavelink
 
 intents = discord.Intents.all()
 b = commands.Bot(command_prefix=".", intents=intents)
+
 @b.event
 async def on_ready():
   await b.load_extension("imgcmds.imgcmds")
@@ -19,5 +20,6 @@ async def on_ready():
   await b.tree.sync(guild=settings.GUILDS_ID)
   # print "ready" in the console when the bot is ready to work
   print("ready")
+
 
 b.run(settings.DISCORD_API_TOKEN)
