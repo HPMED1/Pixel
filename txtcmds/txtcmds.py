@@ -14,7 +14,7 @@ class TxtCmds(app_commands.Group):
         await interaction.response.send_message(embed=embed)
 
 
-    @app_commands.command(name="advice")
+    @app_commands.command(name="advice",description="gives you an advice")
     async def advice(self,interaction: discord.Interaction):
         r = requests.get("https://api.adviceslip.com/advice")
         embed = discord.Embed(color=0xffffff)
@@ -22,7 +22,7 @@ class TxtCmds(app_commands.Group):
         await interaction.response.send_message(embed=embed)
 
 
-    @app_commands.command(name="evilinsult")
+    @app_commands.command(name="evilinsult",description="returns the most evil insults known to mankind")
     async def evilinsult(self,interaction: discord.Interaction):
         r = requests.get(
         f"https://evilinsult.com/generate_insult.php?lang=en&numbe={random.randint(1,3000)}&type=json"
@@ -33,7 +33,7 @@ class TxtCmds(app_commands.Group):
         await interaction.response.send_message(embed=embed)
 
 
-    @app_commands.command(name="define")
+    @app_commands.command(name="define",description="defines a word")
     @app_commands.describe(word_to_define="what should i define")
     async def define(self,interaction: discord.Interaction, word_to_define: str):
         r = requests.get(
@@ -45,7 +45,7 @@ class TxtCmds(app_commands.Group):
 
 
     #how much
-    @app_commands.command(name="howmuch")
+    @app_commands.command(name="howmuch",description="returns 0% -> 100%")
     @app_commands.describe(question="question")
     async def how_much(self,interaction: discord.Interaction, question: str):
         how_list = [
@@ -60,7 +60,6 @@ class TxtCmds(app_commands.Group):
         '82%', '83%', '84%', '85%', '86%', '87%', '88%', '89%', '90%', '91%',
         '92%', '93%', '94%', '95%', '96%', '97%', '98%', '99%', '100%', 'idk'
         ]
-        await interaction.response.send_message(f'{random.choice(how_list)}')
         embed = discord.Embed(
             colour=discord.Colour(0xffffff),
             title=f'how_much {question}'
@@ -70,22 +69,33 @@ class TxtCmds(app_commands.Group):
         await interaction.response.send_message(embed=embed)
 
 
-    @app_commands.command(name="showerthought")
+    @app_commands.command(name="showerthought",description="some shower thoughts so you don't have to think in the shower")
     async def showerthought(self,interaction: discord.Interaction):
         r = requests.get("https://api.popcat.xyz/showerthoughts")
         rr = r.json()["result"]
-        await interaction.response.send_message(rr)
+        embed = discord.Embed(
+            colour=discord.Colour(0xffffff),
+            title="shower thought"
+        )
+        embed.add_field(value=rr)
+
+        await interaction.response.send_message(embed=embed)
 
 
     @app_commands.command(name="avatar")
     @app_commands.describe(member="member")
     async def avatar(self,interaction: discord.Interaction, member: discord.Member):
-        await interaction.response.send_message(member.avatar)
+        embed = discord.Embed(
+            colour=discord.Colour(0xffffff),
+            title=f"{member}'s avatar"
+        )
+        embed.set_image(member.avatar)
+
+        await interaction.response.send_message(embed=embed)
 
 
 
-
-    @app_commands.command(name="lyrics")
+    @app_commands.command(name="lyrics",description="returns the lyrics of any song")
     @app_commands.describe(name="name")
     async def lyrics(self,interaction: discord.Interaction, name: str):
         data = name.replace(" ", "+")
