@@ -7,7 +7,6 @@ import json
 import os
 import asyncio
 import settings
-import wavelink
 
 intents = discord.Intents.all()
 b = commands.Bot(command_prefix=".", intents=intents)
