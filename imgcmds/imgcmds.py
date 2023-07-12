@@ -15,7 +15,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(url=f"https://api.popcat.xyz/sadcat?text={data}")
         await interaction.response.send_message(embed=embed)
 
@@ -28,7 +28,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(
             url=f"https://api.popcat.xyz/pooh?text1={data1}&text2={data2}")
         await interaction.response.send_message(embed=embed)
@@ -40,7 +40,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(
             url=f"https://api.popcat.xyz/jail?image={member.avatar}")
         await interaction.response.send_message(embed=embed)
@@ -53,7 +53,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(url=f"https://api.popcat.xyz/unforgivable?text={data}")
         await interaction.response.send_message(embed=embed)
 
@@ -65,7 +65,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(url=f"https://api.popcat.xyz/oogway?text={data}")
         await interaction.response.send_message(embed=embed)
 
@@ -76,7 +76,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(
             url=f"https://api.popcat.xyz/gun?image={member.avatar}")
         await interaction.response.send_message(embed=embed)
@@ -88,7 +88,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(
             url=f"https://api.popcat.xyz/ship?user1={member1.avatar}&user2={member2.avatar}")
         await interaction.response.send_message(embed=embed)
@@ -105,7 +105,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(
             url=f"https://api.popcat.xyz/pet?image={member.avatar}")
         await interaction.response.send_message(embed=embed)
@@ -118,7 +118,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(url=f"https://api.popcat.xyz/alert?text={data}")
         await interaction.response.send_message(embed=embed)
 
@@ -130,7 +130,7 @@ class ImgCmds(app_commands.Group):
             colour=discord.Colour(0xffffff),
             title=f'{interaction.user.display_name} made this meme!'
         )
-        embed.set_thumbnail(url=interaction.user.avatar)
+        # embed.set_thumbnail(url=interaction.user.avatar)
         embed.set_image(url=f"https://api.popcat.xyz/facts?text={data}")
         await interaction.response.send_message(embed=embed)
 
