@@ -3,7 +3,7 @@ import json
 import os
 import random
 import re
-
+from PIL import Image, ImageDraw, ImageFont
 import discord
 import requests
 from discord import app_commands
@@ -39,18 +39,7 @@ async def makeembed(title: str, thumbnail: str):
 
 
 class ImgCmds(app_commands.Group):
-    @app_commands.command(name="sadcat")
-    @app_commands.describe(text="text")
-    async def sadcat(self, interaction: discord.Interaction, text: str):
-        text = await getidinfo(text)
-        data = text.replace(" ", "+")
-        embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        r = requests.get(
-            f"https://api.popcat.xyz/sadcat?text={data}")
-        with open("image.jpg", "wb") as f:
-            f.write(r.content)
-            await interaction.response.send_message(embed=embed, file=discord.File("image.jpg"))
-
+    
     @app_commands.command(name="poohmeme")
     @app_commands.describe(text1="text1", text2="text2")
     async def poohmeme(self, interaction: discord.Interaction, text1: str, text2: str):
@@ -59,12 +48,14 @@ class ImgCmds(app_commands.Group):
         data1 = text1.replace(" ", "+")
         data2 = text2.replace(" ", "+")
         embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        r = requests.get(
-            f"https://api.popcat.xyz/pooh?text1={data1}&text2={data2}")
-        with open("image.jpg", "wb") as f:
-            f.write(r.content)
-            await interaction.response.send_message(embed=embed,
-                                                    file=discord.File("image.jpg"))
+        img = Image.open('.\memes\pooh.png')
+        draw = ImageDraw.Draw(img)
+        font = ImageFont.truetype('arial.ttf', 15)
+        draw.text((370, 25),data1, fill=(255, 255, 255), font=font)
+        draw.text((370, 335),data2, fill=(255, 255, 255), font=font)
+        img.save('memetosend.png')
+        await interaction.response.send_message(embed=embed,
+                                                    file=discord.File("memetosend.png"))
 
     @app_commands.command(name="jail")
     @app_commands.describe(member="member")
@@ -119,23 +110,6 @@ class ImgCmds(app_commands.Group):
         with open("image.jpg", "wb") as f:
             f.write(r.content)
             await interaction.response.send_message(embed=embed, file=discord.File("image.jpg"))
-
-    @app_commands.command(name="pet")
-    @app_commands.describe(member="member")
-    async def pet(self, interaction: discord.Interaction, member: discord.Member):
-        # with open("image.gif", "wb") as f:
-        # f.write(r.content)
-        # await interaction.response.send_message(
-        # f'{interaction.user.display_name} made this meme!',
-        # file=discord.File("image.gif"))
-        # embed = discord.Embed(
-        # colour=discord.Colour(0xffffff),
-        # title=f'{interaction.user.display_name} made this meme!'
-        # )
-        # embed.set_thumbnail(url=interaction.user.avatar)
-        # embed.set_image(
-        # url=f"https://api.popcat.xyz/pet?image={member.avatar}")
-        await interaction.response.send_message(f"https://api.popcat.xyz/pet?image={member.avatar}")
 
     @app_commands.command(name="alert")
     @app_commands.describe(text="text")
@@ -251,29 +225,6 @@ class TxtCmds(app_commands.Group):
 
         await interaction.response.send_message(embed=embed)
 
-    @app_commands.command(name="lyrics", description="returns the lyrics of any song")
-    @app_commands.describe(name="name")
-    async def lyrics(self, interaction: discord.Interaction, name: str):
-        data = name.replace(" ", "+")
-        r = requests.get(f"https://api.popcat.xyz/lyrics?song={data}")
-        rr = r.json()
-        embed = discord.Embed(color=0xffffff)
-        embed.add_field(name='Name', value=rr["title"])
-        embed.set_image(url=rr['image'])
-        embed.add_field(name='Artist', value=rr['artist'])
-        await interaction.response.send_message('`' + rr['lyrics'] + '`', embed=embed)
-
-    @app_commands.command(name="tax")
-    @app_commands.describe(amount_to_tax="amount to tax")
-    async def tax(self, interaction: discord.Interaction, amount_to_tax: int):
-        embed = discord.Embed(color=0xffffff)
-        embed.add_field(name="Probot tax", value=int(
-            amount_to_tax * 0.05), inline=True)
-        embed.add_field(name="Total amount", value=amount_to_tax *
-                        0.05 + amount_to_tax, inline=True)
-        await interaction.response.send_message(embed=embed)
-
-
 @b.event
 async def on_ready():
     b.tree.add_command(TxtCmds(name="commands"))
@@ -284,4 +235,4 @@ async def on_ready():
     # print "ready" in the console when the bot is ready to work
     print("ready")
 
-b.run(settings.DISCORD_API_TOKEN)
+b.run("NzQxNzg0NjcwMzc4NjU1NzY2.GAtvjS.V3DuxzZ-JNZCxsh0yyt90mjWvB_R1H7Nef8pOI")
