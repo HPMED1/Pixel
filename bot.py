@@ -3,13 +3,15 @@ import json
 import os
 import random
 import re
-from PIL import Image, ImageDraw, ImageFont
 import discord
 import requests
 from discord import app_commands
 from discord.ext import commands, tasks
+from wand.image import Image
+from wand.drawing import Drawing
+from wand.font import Font
 
-import settings
+
 
 intents = discord.Intents.all()
 b = commands.Bot(command_prefix=".", intents=intents)
@@ -37,25 +39,32 @@ async def makeembed(title: str, thumbnail: str):
     embed.set_thumbnail(url=thumbnail)
     return embed
 
+async def makememetosend(title: str, thumbnail: str):
+    embed = discord.Embed(
+        colour=discord.Colour(0xffffff),
+        title=title
+    )
+    embed.set_thumbnail(url=thumbnail)
+    return embed
+
 
 class ImgCmds(app_commands.Group):
     
     @app_commands.command(name="poohmeme")
-    @app_commands.describe(text1="text1", text2="text2")
+    @app_commands.describe(text1="Top", text2="Bottom")
     async def poohmeme(self, interaction: discord.Interaction, text1: str, text2: str):
         text1 = await getidinfo(text1)
         text2 = await getidinfo(text2)
-        data1 = text1.replace(" ", "+")
-        data2 = text2.replace(" ", "+")
-        embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        img = Image.open('.\memes\pooh.png')
-        draw = ImageDraw.Draw(img)
-        font = ImageFont.truetype('arial.ttf', 15)
-        draw.text((370, 25),data1, fill=(255, 255, 255), font=font)
-        draw.text((370, 335),data2, fill=(255, 255, 255), font=font)
-        img.save('memetosend.png')
-        await interaction.response.send_message(embed=embed,
-                                                    file=discord.File("memetosend.png"))
+        #embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
+        with Image(filename="memes/pooh.png") as canvas:
+            left, top, width, height = 360, 15, 430, 250
+            with Drawing() as context:
+                font = Font('/System/Library/Fonts/MarkerFelt.ttc')
+                context(canvas)
+                canvas.caption(text1, left=left, top=top, width=width, height=height, font=font, gravity='center')
+                canvas.caption(text2, left=left, top=325, width=width, height=height, font=font, gravity='center')
+                canvas.save(filename='memes/memetosend.png')
+        await interaction.response.send_message(file=discord.File("memes/memetosend.png"))
 
     @app_commands.command(name="jail")
     @app_commands.describe(member="member")
@@ -235,4 +244,4 @@ async def on_ready():
     # print "ready" in the console when the bot is ready to work
     print("ready")
 
-b.run("NzQxNzg0NjcwMzc4NjU1NzY2.GAtvjS.V3DuxzZ-JNZCxsh0yyt90mjWvB_R1H7Nef8pOI")
+b.run("NzQxNzg0NjcwMzc4NjU1NzY2.Gthf00.itpAHdxTKLd5MybCLFLiBhZPpja97MRZjO5egI")
