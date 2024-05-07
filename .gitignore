@@ -1,3 +1,4 @@
 
 *.pyc
 txtcmds/__pycache__/txtcmds.cpython-310.pyc
+.env
