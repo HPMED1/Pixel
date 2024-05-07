@@ -15,8 +15,21 @@ from dotenv import load_dotenv
 
 intents = discord.Intents.all()
 b = commands.Bot(command_prefix=".", intents=intents)
+async def ooverlay(meme  , member):
+    with open("memes/profilepic.png", "wb") as f:
+        r =requests.get(member.avatar)
+        f.write(r.content)
+    image1 = Image(filename=f'memes/{meme}.png')
+    image2 = Image(filename='memes/profilepic.png',width=500, height=500)
+    image2.resize(width=500, height=500)
+    image2.composite(image1)
+    image2.save(filename="memes/memetosend.png")
 
 
+async def downloadpfp(member):
+    r =requests.get(member.avatar)
+    with open("memes/profilepic.png", "wb") as f:
+        f.write(r.content)
 async def getidinfo(t, b=b):
     pattern = "<@[0-9]{18}>"
     id = re.findall(pattern, t)
@@ -62,12 +75,16 @@ class ImgCmds(app_commands.Group):
     @app_commands.command(name="jail")
     @app_commands.describe(member="member")
     async def jail(self, interaction: discord.Interaction, member: discord.Member):
-        embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        r = requests.get(
-            f"https://api.popcat.xyz/jail?image={member.avatar}")
-        with open("image.jpg", "wb") as f:
-            f.write(r.content)
-            await interaction.response.send_message(embed=embed, file=discord.File("image.jpg"))
+        with open("memes/profilepic.png", "wb") as f:
+                r =requests.get(member.avatar)
+                f.write(r.content)
+                image1 = Image(filename=f'memes/jail.png')
+                image2 = Image(filename='memes/profilepic.png',width=500, height=500)
+                image2.resize(width=500, height=500)
+                image2.composite(image1)
+                image2.save(filename="memes/memetosend.png")
+
+        await interaction.response.send_message(file=discord.File("memes/memetosend.png"))
 
     @app_commands.command(name="unforgivable")
     @app_commands.describe(question="question")
