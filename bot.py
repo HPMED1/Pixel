@@ -15,17 +15,6 @@ from dotenv import load_dotenv
 
 intents = discord.Intents.all()
 b = commands.Bot(command_prefix=".", intents=intents)
-async def ooverlay(meme  , member):
-    with open("memes/profilepic.png", "wb") as f:
-        r =requests.get(member.avatar)
-        f.write(r.content)
-    image1 = Image(filename=f'memes/{meme}.png')
-    image2 = Image(filename='memes/profilepic.png',width=500, height=500)
-    image2.resize(width=500, height=500)
-    image2.composite(image1)
-    image2.save(filename="memes/memetosend.png")
-
-
 async def downloadpfp(member):
     r =requests.get(member.avatar)
     with open("memes/profilepic.png", "wb") as f:
@@ -61,7 +50,6 @@ class ImgCmds(app_commands.Group):
     async def poohmeme(self, interaction: discord.Interaction, text1: str, text2: str):
         text1 = await getidinfo(text1)
         text2 = await getidinfo(text2)
-        #embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
         with Image(filename="memes/pooh.png") as canvas:
             left, top, width, height = 360, 15, 430, 250
             with Drawing() as context:
@@ -83,76 +71,52 @@ class ImgCmds(app_commands.Group):
                 image2.resize(width=500, height=500)
                 image2.composite(image1)
                 image2.save(filename="memes/memetosend.png")
-
         await interaction.response.send_message(file=discord.File("memes/memetosend.png"))
 
     @app_commands.command(name="unforgivable")
     @app_commands.describe(question="question")
     async def unforgivable(self, interaction: discord.Interaction, question: str):
         question = await getidinfo(question)
-        data = question.replace(" ", "+")
-        embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        r = requests.get(
-            f"https://api.popcat.xyz/unforgivable?text={data}")
-        with open("image.jpg", "wb") as f:
-            f.write(r.content)
-            await interaction.response.send_message(embed=embed, file=discord.File("image.jpg"))
+        with Image(filename="memes/unforgivable.png") as canvas:
+            left, top, width, height = 85, 350, 570, 40
+            with Drawing() as context:
+                font = Font('/System/Library/Fonts/MarkerFelt.ttc')
+                context(canvas)
+                canvas.caption(question, left=left, top=top, width=width, height=height, font=font, gravity='west')
+                
+                canvas.save(filename='memes/memetosend.png')
+            await interaction.response.send_message(file=discord.File("memes/memetosend.png"))
 
-    @app_commands.command(name="oogway")
-    @app_commands.describe(question="question")
-    async def oogway(self, interaction: discord.Interaction, question: str):
-        question = await getidinfo(question)
-        data = question.replace(" ", "+")
-        embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        r = requests.get(
-            f"https://api.popcat.xyz/oogway?text={data}")
-        with open("image.jpg", "wb") as f:
-            f.write(r.content)
-            await interaction.response.send_message(embed=embed, file=discord.File("image.jpg"))
-
+    
     @app_commands.command(name="gun")
     @app_commands.describe(member="member")
     async def gun(self, interaction: discord.Interaction, member: discord.Member):
-        embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        r = requests.get(
-            f"https://api.popcat.xyz/gun?image={member.avatar}")
-        with open("image.jpg", "wb") as f:
-            f.write(r.content)
-            await interaction.response.send_message(embed=embed, file=discord.File("image.jpg"))
-
-    @app_commands.command(name="ship")
-    @app_commands.describe(member1="member1", member2="member2")
-    async def ship(self, interaction: discord.Interaction, member1: discord.Member, member2: discord.Member):
-        embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        r = requests.get(
-            f"https://api.popcat.xyz/ship?user1={member1.avatar}&user2={member2.avatar}")
-        with open("image.jpg", "wb") as f:
-            f.write(r.content)
-            await interaction.response.send_message(embed=embed, file=discord.File("image.jpg"))
+        with open("memes/profilepic.png", "wb") as f:
+                r =requests.get(member.avatar)
+                f.write(r.content)
+                image1 = Image(filename=f'memes/gun.png')
+                image2 = Image(filename='memes/profilepic.png',width=500, height=500)
+                image2.resize(width=500, height=500)
+                image1.resize(width=500, height=500)
+                image2.composite(image1)
+                image2.save(filename="memes/memetosend.png")
+        await interaction.response.send_message(file=discord.File("memes/memetosend.png"))
 
     @app_commands.command(name="alert")
     @app_commands.describe(text="text")
     async def alert(self, interaction: discord.Interaction, text: str):
         text = await getidinfo(text)
-        data = text.replace(" ", "+")
-        embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        r = requests.get(
-            f"https://api.popcat.xyz/alert?text={data}")
-        with open("image.jpg", "wb") as f:
-            f.write(r.content)
-            await interaction.response.send_message(embed=embed, file=discord.File("image.jpg"))
+        with Image(filename="memes/alert.png") as canvas:
+            left, top, width, height = 85, 350, 570, 40
+            with Drawing() as context:
+                font = Font('/System/Library/Fonts/MarkerFelt.ttc')
+                context(canvas)
+                canvas.caption(question, left=left, top=top, width=width, height=height, font=font, gravity='west')
+                
+                canvas.save(filename='memes/memetosend.png')
+            await interaction.response.send_message(file=discord.File("memes/memetosend.png"))
 
-    @app_commands.command(name="facts")
-    @app_commands.describe(text="text")
-    async def facts(self, interaction: discord.Interaction, text: str):
-        text = await getidinfo(text)
-        data = text.replace(" ", "+")
-        embed = await makeembed(title=f'{interaction.user.display_name} made this meme!', thumbnail=interaction.user.avatar)
-        r = requests.get(
-            f"https://api.popcat.xyz/facts?text={data}")
-        with open("image.jpg", "wb") as f:
-            f.write(r.content)
-            await interaction.response.send_message(embed=embed, file=discord.File("image.jpg"))
+    
 
 # -------------------------------------------------------------
 
